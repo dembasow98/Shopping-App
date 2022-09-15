@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 
 //import the app logo
 import logo from '../img/logo.png';
+import Login from '../pages/login';
 
 const Navbar = () => {
 
@@ -53,6 +54,7 @@ const Navbar = () => {
             window.removeEventListener("click", checkIfClickedOutside);
         };
     }, [isMenuOpen]);
+    
 
     return (
         <>
@@ -64,9 +66,11 @@ const Navbar = () => {
                     </Link>
                 </div>
                 <div className="NAVBAR-MENU flex md:order-2">
-                    <button className="LOGIN-BUTTON bg-violet-500 hover:bg-violet-600  active:bg-violet-700 text-white font-bold py-2 px-6 rounded-full mr-5 md:mr-10">
-                        Login
-                    </button>
+                    <Link to = '/login'>
+                        <button  className="LOGIN-BUTTON bg-violet-500 hover:bg-violet-600  active:bg-violet-700 text-white font-bold py-2 px-6 rounded-full mr-5 md:mr-10">
+                            Login
+                        </button>
+                    </Link>
                     <button className="BURGER-BUTTON md:hidden mr-5 " id="burger-button" onClick={() => setIsMenuOpen(oldState =>!oldState)}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

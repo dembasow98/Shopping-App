@@ -6,7 +6,7 @@ import About from "./pages/about";
 import Services from "./pages/services";
 import Contact from "./pages/contact";
 //import Footer from "./components/footer";
-
+import Login from "./pages/login";
 
 function App() {
   
@@ -21,6 +21,7 @@ function App() {
               <Route path="about" element={<About />} />
               <Route path="services" element={<Services />} />
               <Route path="contact" element={<Contact />} />
+              <Route path="login" element={<Login />} />
             </Route>
           </Routes>
         </BrowserRouter>
