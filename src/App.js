@@ -7,6 +7,7 @@ import Services from "./pages/services";
 import Contact from "./pages/contact";
 //import Footer from "./components/footer";
 import Login from "./pages/login";
+import Register from "./pages/register";
 
 function App() {
   
@@ -22,6 +23,7 @@ function App() {
               <Route path="services" element={<Services />} />
               <Route path="contact" element={<Contact />} />
               <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
             </Route>
           </Routes>
         </BrowserRouter>
