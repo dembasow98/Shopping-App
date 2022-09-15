@@ -8,6 +8,7 @@ import Contact from "./pages/contact";
 //import Footer from "./components/footer";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import Basket from "./pages/basket";
 
 function App() {
   
@@ -24,6 +25,7 @@ function App() {
               <Route path="contact" element={<Contact />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
+              <Route path="basket" element={<Basket />} />
             </Route>
           </Routes>
         </BrowserRouter>

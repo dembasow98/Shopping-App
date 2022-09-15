@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 
 //import the app logo
 import logo from '../img/logo.png';
-import Login from '../pages/login';
 
 const Navbar = () => {
 
@@ -58,12 +57,12 @@ const Navbar = () => {
 
     return (
         <>
-            <nav ref = {pageReference} className="NAVBAR flex flex-row justify-between items-center bg-gray-900 text-white h-24 border-b border-gray-200 dark:border-gray-600">
+            <nav ref = {pageReference} className="NAVBAR flex flex-row justify-between items-center bg-gray-900 text-white h-18 border-b border-gray-200 dark:border-gray-600">
                 <div className="LOGO flex items-center">
-                    <Link to='/' className='flex items-center'>
+                    <a href='/' className='flex items-center'>
                     <img src={logo} alt="logo" />
                     <span class="self-center text-xl font-bold whitespace-nowrap dark:text-white">E-COMMERCE</span>
-                    </Link>
+                    </a>
                 </div>
                 <div className="NAVBAR-MENU flex md:order-2">
                     <Link to = '/login'>
@@ -108,8 +107,10 @@ const Navbar = () => {
             {/*Place the clicked route name in the left and the basket info in the right */}
             <div className="flex  justify-between place-items-center mt-4 mx-6 sm:mx-8 md:mx-10 lg:mx-16  text-gray-200">
                 <p className="text-xl sm:text-2xl md:text-3xl font-bold"> Products</p>
-                <div className="flex items-center px-3 rounded-full py-2 border border-gray-200 cursor-pointer" onClick={<Link to='/basket'/>}>
-                    <p className="text-sm sm:text-xl font-bold"> Basket: <span className='text-red-700 font-extrabold'>5</span> Items</p>
+                <div className="flex items-center px-3 rounded-full py-2 border border-gray-200 cursor-pointer">
+                    <Link to='/basket'>
+                        <p className="text-sm sm:text-xl font-bold"> Basket: <span className='text-red-700 font-extrabold'>5</span> Items</p>
+                    </Link>
                 </div>
             </div>
             <Outlet />  

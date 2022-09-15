@@ -1,4 +1,5 @@
 import {Component} from 'react';
+import {Link} from 'react-router-dom';
 
 class Login extends Component {
 
@@ -33,7 +34,7 @@ class Login extends Component {
                     </div>
                     {/**Don't have an account? Register */}
                     <div className='REGISTER flex flex-col items-center min-w-[70%] mt-8'>
-                        <p className='text-sm font-medium'>Don't have an account? <a href='/register' className='text-blue-500'>Register</a></p>
+                        <p className='text-sm font-medium'>Don't have an account? <Link to='/register' className='text-blue-500'>Register</Link></p>
                     </div>
 
                 </div>
