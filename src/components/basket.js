@@ -1,6 +1,7 @@
 import { Component } from "react";
 //import { Link } from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux';
+import { basketActions } from "../store/basket-slice";
 
 
 const Basket = () => {
@@ -17,18 +18,18 @@ const Basket = () => {
     //handle the click event of the + button
     const increaseItemQuantity = (item) => {
         //dispatch the action to add the item to the basket
-        dispatch(basketItems.addToBasket({
+        dispatch(basketActions.addToBasket({
             id: item.id,
-            name: item.name,
-            price: item.price
+            price:item.price,
+            quantity:item.quantity,
+            name:item.name,
+            totalPrice:item.totalPrice,
         }));
     }
     //handle the click event of the - button
     const decreaseItemQuantity = (item) => {
 
-        dispatch(basketItems.removeFromBasket({
-
-        }))
+        dispatch(basketActions.removeFromBasket(item.id))
     }
      
      
@@ -68,21 +69,21 @@ const Basket = () => {
                                 </td>
                                 <td className="py-4 px-6">
                                     <div className="flex items-center space-x-3">
-                                        <button onClick={increaseItemQuantity} className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white rounded-full border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                                        <button onClick={()=>decreaseItemQuantity(item)}  className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white rounded-full border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
                                             <span className="sr-only">Quantity button</span>
                                             <svg className="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
                                         </button>
                                         <div>
                                             <input value={item.quantity} type="number" id="first_product" className="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1" required/>
                                         </div>
-                                        <button onClick={decreaseItemQuantity} className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white rounded-full border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
+                                        <button onClick={()=>increaseItemQuantity(item)} className="inline-flex items-center p-1 text-sm font-medium text-gray-500 bg-white rounded-full border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
                                             <span className="sr-only">Quantity button</span>
                                             <svg className="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                                         </button>
                                     </div>
                                 </td>
                                 <td className="py-4 px-6 font-semibold text-gray-900 dark:text-white">
-                                    ${item.price}
+                                    ${item.totalPrice}
                                 </td>
                                 <td className="py-4 px-6">
                                     <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
@@ -91,8 +92,14 @@ const Basket = () => {
                         ))}
                     </tbody>
                 </table>
-                <div className="flex justify-center items-center dark:bg-gray-500 w-full text-xl font-medium">
-                    <p className="my-2 text-slate-50 uppercase">Total: $ {totalPrice}</p>
+                <div className="flex justify-center items-center dark:bg-gray-500 w-full text-md font-medium">
+                    {
+                        totalPrice === 0 ? (
+                            <p className="my-2 text-slate-50 uppercase">Your basket is empty!</p>
+                        ):(
+                            <p className="my-2 text-slate-50 uppercase">Total: $ {totalPrice}</p>
+                        )
+                    }
                 </div>
             </div>
         </div>

@@ -98,6 +98,7 @@ const Navbar = (props) => {
             <div className="flex justify-between place-items-center mt-20 mx-6 sm:mx-8 md:mx-10 lg:mx-16 xl:mx-44  text-gray-200">
                 <p className="text-xl sm:text-2xl md:text-3xl font-bold"> Products</p>
                 <div className="flex items-center px-3 rounded-full py-2 border border-gray-200 cursor-pointer">
+                    
                     <Link to='/basket'>
                         <p className="text-sm sm:text-xl font-bold"> Basket: <span className='text-red-700 font-extrabold'>{totalItems}</span> Items</p>
                     </Link>

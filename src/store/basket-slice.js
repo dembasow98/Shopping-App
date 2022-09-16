@@ -15,12 +15,11 @@ const basketSlice = createSlice({
             //if the item has already been added: increase it's quantity by 1
             const sameItem = state.itemsList.find((item) => item.id === newItem.id);
 
-            if(sameItem){
+            if(sameItem){ //The item already exists in the basket
                 sameItem.quantity++;
-                sameItem.price += newItem.price;
-                //update the total price
-                state.totalPrice += newItem.price;
-            }else{
+                sameItem.totalPrice += newItem.price;
+              
+            }else{ //The item is new to the basket
                 state.itemsList.push({
                     id: newItem.id,
                     price: newItem.price,
@@ -30,11 +29,9 @@ const basketSlice = createSlice({
                 });
                 //update the total quantity
                 state.totalQuantity++;
-
-                //update the total price
-                state.totalPrice += newItem.price;
             }
-
+            //update the total price
+            state.totalPrice += newItem.price;
 
         },
         removeFromBasket(state, action){
@@ -46,12 +43,10 @@ const basketSlice = createSlice({
                 state.itemsList = state.itemsList.filter((item) => item.id !== id);
             }else{
                 sameItem.quantity--;
-                sameItem.price -= sameItem.price;
+                sameItem.totalPrice -= sameItem.price;
             }
-            //update the total quantity in the basket
-            state.totalQuantity--;
-            //update the total price of the items in the basket
             state.totalPrice -= sameItem.price;
+
         },
         setShowBasket(state){
             state.showBasket = true
