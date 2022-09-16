@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react"
 
 //import the app logo
 import logo from '../img/logo.png';
-import {useSelector } from 'react-redux';
+import {useSelector, useDispatch } from 'react-redux';
+import {authActions} from '../store/auth-slice';
 
 const Navbar = (props) => {
     //Don't use the follwoing code, if the breakpoint is above 768px
@@ -39,6 +40,12 @@ const Navbar = (props) => {
         };
     }, [isMenuOpen]);
 
+    //let's handle the logout
+    const dispatch = useDispatch();
+    const handleLogout = () => {
+        dispatch(authActions.logout())
+    }
+
     //Total items in basket
     const totalItems = useSelector((state) => state.basket.totalQuantity);
     
@@ -55,11 +62,22 @@ const Navbar = (props) => {
                     </a>
                 </div>
                 <div className="NAVBAR-MENU flex md:order-2 xl:mr-[4%]">
-                    <Link to = '/login'>
-                        <button  className="LOGIN-BUTTON bg-violet-500 hover:bg-violet-600  active:bg-violet-700 text-white font-bold py-2 px-6 rounded-full mr-5 md:mr-10">
-                            Login
-                        </button>
-                    </Link>
+                    {
+                        props.isLoggedIn ? (
+                            <Link to = '/login'>
+                                <button onClick={handleLogout} class="LOGOUT-BUTTON relative inline-flex items-center justify-center px-6 py-2 mr-5 md:mr-10 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-red-700 hover:from-pink-600 hover:to-red-900 hover:text-white dark:text-white focus:ring-1 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+                                    Logout
+                                </button>
+                            </Link>
+                        ) : (
+                            <Link to = '/login'>
+                                <button  className="LOGIN-BUTTON bg-violet-500 hover:bg-violet-600  active:bg-violet-700 text-white font-bold py-2 px-6 rounded-full mr-5 md:mr-10">
+                                    Login
+                                </button>
+                            </Link>
+                        )
+                    }
+                    
                     <button className="BURGER-BUTTON md:hidden mr-5 " id="burger-button" onClick={() => setIsMenuOpen(oldState =>!oldState)}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

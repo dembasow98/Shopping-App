@@ -54,7 +54,7 @@ const basketSlice = createSlice({
             const sameItem = state.itemsList.find((item) => item.id === id);
             state.itemsList = state.itemsList.filter((item) => item.id !== id);
             state.totalPrice -= sameItem.totalPrice;
-            state.totalQuantity -= sameItem.quantity;
+            state.totalQuantity--;
         },
         
         setShowBasket(state){
