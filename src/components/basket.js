@@ -31,7 +31,14 @@ const Basket = () => {
 
         dispatch(basketActions.removeFromBasket(item.id))
     }
+
+    //let's implement the remove item from basket functionality
+    const removeItemFromBasket = (item) => {
+        //dispatch the action to remove the item from the basket
+        dispatch(basketActions.deleteItemFromBasket(item.id));
+    }
      
+    
      
 
     return (
@@ -86,7 +93,7 @@ const Basket = () => {
                                     ${item.totalPrice}
                                 </td>
                                 <td className="py-4 px-6">
-                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+                                    <a onClick={()=>removeItemFromBasket(item)} href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
                                 </td>
                             </tr>
                         ))}

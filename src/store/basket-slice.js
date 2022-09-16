@@ -48,6 +48,15 @@ const basketSlice = createSlice({
             state.totalPrice -= sameItem.price;
 
         },
+        //Delete totally the item from the basket
+        deleteItemFromBasket(state, action){
+            const id = action.payload;
+            const sameItem = state.itemsList.find((item) => item.id === id);
+            state.itemsList = state.itemsList.filter((item) => item.id !== id);
+            state.totalPrice -= sameItem.totalPrice;
+            state.totalQuantity -= sameItem.quantity;
+        },
+        
         setShowBasket(state){
             state.showBasket = true
         }
