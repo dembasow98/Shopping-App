@@ -6,10 +6,14 @@ const basketSlice = createSlice({
     initialState:{
         itemsList: [],
         totalQuantity: 0,
-        showBasket: false,
         totalPrice: 0
     },
     reducers:{
+        getFirebaseData(state, action){
+            state.totalQuantity = action.payload.totalQuantity;
+            state.totalPrice = action.payload.totalPrice;
+            state.itemsList = action.payload.itemsList;
+        },
         addToBasket(state, action){
             const newItem = action.payload;
             //if the item has already been added: increase it's quantity by 1
@@ -58,11 +62,10 @@ const basketSlice = createSlice({
             state.totalQuantity--;
         },
         
-        setShowBasket(state){
-            state.showBasket = true
-        }
+        
     }
 });
+
 
 export const basketActions = basketSlice.actions;
 

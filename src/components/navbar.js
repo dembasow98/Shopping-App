@@ -6,13 +6,8 @@ import { useEffect, useRef, useState } from "react"
 import logo from '../img/logo.png';
 import {useSelector, useDispatch } from 'react-redux';
 import {authActions} from '../store/auth-slice';
-import {uiActions} from '../store/ui-slice';
-
-//import toast
-import Toast from './toast';
-
-//Handle the notification rendering
-let isFirstRender = true;
+import { fetchData } from '../store/basket-actions';
+import Toast from '../components/toast';
 
 
 const Navbar = (props) => {
@@ -23,7 +18,6 @@ const Navbar = (props) => {
 
     //Total items in basket
     const totalItems = useSelector((state) => state.basket.totalQuantity);
-    const basket  = useSelector(state => state.basket);
     
 
 
@@ -32,14 +26,8 @@ const Navbar = (props) => {
     
    
     useEffect(() => {
-        //if the breakpoint is md or larger, set isMenuOpen to true
-        /*if (window.innerWidth >= 768) {
-            setIsMenuOpen(true);
-        }*/
-
         const checkIfClickedOutside = e => {
-            // If the menu is open and the clicked target is not within the menu,
-            // then close the menu
+            // If the menu is open and the clicked target is not within the menu, then close the menu
             if (
                 isMenuOpen &&
                 pageReference.current &&
@@ -55,62 +43,16 @@ const Navbar = (props) => {
     }, [isMenuOpen, pageReference]);
 
     //let's handle the logout
-    
     const handleLogout = () => {
         dispatch(authActions.logout())
     }
 
-    
-    //Handle the notification
     const notification = useSelector(state => state.ui.notification);
 
-    //console.log("Notification: "+notification);
-    
 
     useEffect(() => {
-        if (isFirstRender) {
-            isFirstRender = false;
-            return;
-        }
-        const sendRequest = async () => {
-            //Display the warning message while sending the request
-            dispatch(uiActions.showNotification({
-                open: true,
-                type: 'warning',
-                message: 'Sending request to the database...'
-            }));
-
-            const response = await fetch(
-                "https://react-redux-apps-50376-default-rtdb.firebaseio.com/products.json", 
-                {
-                    method: "PUT",
-                    body: JSON.stringify(basket),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-            const data = await response.json();
-            //console.log(data);
-
-            //Display the success message after the request is sent successfully
-            dispatch(uiActions.showNotification({
-                open: true,
-                type: 'success',
-                message: 'Request sent successfully!'
-            }));
-        };
-
-        sendRequest().catch((error) => {
-            console.log(error)
-            //Get the dispatch
-            dispatch(uiActions.showNotification({
-                open: true,
-                type: 'error',
-                message: 'Request failed!'
-            }));
-        });
-    }, [basket, dispatch]);   
+        dispatch(fetchData());
+    }, [dispatch]);
 
     return (
         <>
@@ -174,6 +116,14 @@ const Navbar = (props) => {
                     </div>
                 )}
             </nav>
+            {/*This area is for alert message: */}
+            {
+                notification && (
+                    <div className="flex justify-center items-center mb-3 w-full">
+                        <Toast type = {notification.type} message = {notification.message} />
+                    </div>
+                )
+            }
            
             {/*Place the clicked route name in the left and the basket info in the right */}
             <div className="flex justify-between place-items-center mt-20 mx-6 sm:mx-8 md:mx-10 lg:mx-16 xl:mx-44  text-gray-200">
@@ -193,20 +143,8 @@ const Navbar = (props) => {
                     )
                 }
             </div>
-
-            {/*This area is for alert message: */}
-            {
-                notification && (
-                    <div className="flex justify-center items-center mt-3 w-full">
-                    
-                        <Toast type = {notification.type} message = {notification.message} />
-                        
-                    </div>
-                    
-                    
-                )
-                
-            }
+            
+           
             <Outlet />  
         </>
     )};

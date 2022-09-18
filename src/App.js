@@ -11,16 +11,13 @@ import Basket from "./components/basket";
 import View from "./components/view";
 import { useSelector } from "react-redux";
 
-
-
-
-
 function App() {
 
   //Handle the login
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   console.log(isLoggedIn);
-    
+
+ 
   return (
     <div className="SCREEN flex w-full min-h-screen h-full dark:bg-gray-500 place-content-center">
       <div className="CONTAINER dark:bg-gray-800 bg-gray-200 w-full">
@@ -49,8 +46,7 @@ function App() {
                 </Route>
               )
             }
-            
-           
+          
           </Routes>
         </BrowserRouter>
       </div>
