@@ -6,17 +6,31 @@ import { useEffect, useRef, useState } from "react"
 import logo from '../img/logo.png';
 import {useSelector, useDispatch } from 'react-redux';
 import {authActions} from '../store/auth-slice';
+import {uiActions} from '../store/ui-slice';
+
+//import toast
+import Toast from './toast';
+
+//Handle the notification rendering
+let isFirstRender = true;
+
 
 const Navbar = (props) => {
-    //Don't use the follwoing code, if the breakpoint is above 768px
 
+    const dispatch = useDispatch();
+    //Don't use the follwoing code, if the breakpoint is above 768px
     const pageReference = useRef();
 
-    //if the window is resized, check if the breakpoint is above 768px display the menu items without requiring refresh
-    
-    const [isMenuOpen, setIsMenuOpen] = useState(true ? window.innerWidth > 768 : false);
+    //Total items in basket
+    const totalItems = useSelector((state) => state.basket.totalQuantity);
+    const basket  = useSelector(state => state.basket);
     
 
+
+    //if the window is resized, check if the breakpoint is above 768px display the menu items without requiring refresh
+    const [isMenuOpen, setIsMenuOpen] = useState(true ? window.innerWidth > 768 : false);
+    
+   
     useEffect(() => {
         //if the breakpoint is md or larger, set isMenuOpen to true
         /*if (window.innerWidth >= 768) {
@@ -38,17 +52,65 @@ const Navbar = (props) => {
         return () => {
             window.removeEventListener("click", checkIfClickedOutside);
         };
-    }, [isMenuOpen]);
+    }, [isMenuOpen, pageReference]);
 
     //let's handle the logout
-    const dispatch = useDispatch();
+    
     const handleLogout = () => {
         dispatch(authActions.logout())
     }
 
-    //Total items in basket
-    const totalItems = useSelector((state) => state.basket.totalQuantity);
     
+    //Handle the notification
+    const notification = useSelector(state => state.ui.notification);
+
+    //console.log("Notification: "+notification);
+    
+
+    useEffect(() => {
+        if (isFirstRender) {
+            isFirstRender = false;
+            return;
+        }
+        const sendRequest = async () => {
+            //Display the warning message while sending the request
+            dispatch(uiActions.showNotification({
+                open: true,
+                type: 'warning',
+                message: 'Sending request to the database...'
+            }));
+
+            const response = await fetch(
+                "https://react-redux-apps-50376-default-rtdb.firebaseio.com/products.json", 
+                {
+                    method: "PUT",
+                    body: JSON.stringify(basket),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            const data = await response.json();
+            //console.log(data);
+
+            //Display the success message after the request is sent successfully
+            dispatch(uiActions.showNotification({
+                open: true,
+                type: 'success',
+                message: 'Request sent successfully!'
+            }));
+        };
+
+        sendRequest().catch((error) => {
+            console.log(error)
+            //Get the dispatch
+            dispatch(uiActions.showNotification({
+                open: true,
+                type: 'error',
+                message: 'Request failed!'
+            }));
+        });
+    }, [basket, dispatch]);   
 
     return (
         <>
@@ -112,16 +174,39 @@ const Navbar = (props) => {
                     </div>
                 )}
             </nav>
+           
             {/*Place the clicked route name in the left and the basket info in the right */}
             <div className="flex justify-between place-items-center mt-20 mx-6 sm:mx-8 md:mx-10 lg:mx-16 xl:mx-44  text-gray-200">
-                <p className="text-xl sm:text-2xl md:text-3xl font-bold"> Products</p>
-                <div className="flex items-center px-3 rounded-full py-2 border border-gray-200 cursor-pointer">
-                    
-                    <Link to='/basket'>
-                        <p className="text-sm sm:text-xl font-bold"> Basket: <span className='text-red-700 font-extrabold'>{totalItems}</span> Items</p>
-                    </Link>
-                </div>
+                {
+                    props.isLoggedIn ? (
+                        <>
+                            <p className="text-xl sm:text-2xl md:text-3xl font-bold"> Products</p>
+                            <div className="flex items-center px-3 rounded-full py-2 border border-gray-200 cursor-pointer">
+                                
+                                <Link to='/basket'>
+                                    <p className="text-sm sm:text-xl font-bold"> Basket: <span className='text-red-700 font-extrabold'>{totalItems}</span> Items</p>
+                                </Link>
+                            </div>
+                        </>
+                    ) : (
+                        <p className="text-xl sm:text-2xl md:text-3xl font-bold">{props.routeName}</p>
+                    )
+                }
             </div>
+
+            {/*This area is for alert message: */}
+            {
+                notification && (
+                    <div className="flex justify-center items-center mt-3 w-full">
+                    
+                        <Toast type = {notification.type} message = {notification.message} />
+                        
+                    </div>
+                    
+                    
+                )
+                
+            }
             <Outlet />  
         </>
     )};

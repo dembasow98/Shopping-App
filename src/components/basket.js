@@ -39,7 +39,7 @@ const Basket = () => {
     }
      
     
-     
+    
 
     return (
         <div className="flex justify-center w-full h-screen">

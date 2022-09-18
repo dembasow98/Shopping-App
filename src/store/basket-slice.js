@@ -41,6 +41,7 @@ const basketSlice = createSlice({
 
             if(sameItem.quantity === 1){
                 state.itemsList = state.itemsList.filter((item) => item.id !== id);
+                state.totalQuantity--;
             }else{
                 sameItem.quantity--;
                 sameItem.totalPrice -= sameItem.price;

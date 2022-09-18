@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React from "react";
 import Navbar from "./components/navbar";
 import Home from "./pages/home";
 import About from "./pages/about";
@@ -13,12 +12,15 @@ import View from "./components/view";
 import { useSelector } from "react-redux";
 
 
+
+
+
 function App() {
-  
+
+  //Handle the login
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   console.log(isLoggedIn);
-  
-  
+    
   return (
     <div className="SCREEN flex w-full min-h-screen h-full dark:bg-gray-500 place-content-center">
       <div className="CONTAINER dark:bg-gray-800 bg-gray-200 w-full">
@@ -33,7 +35,7 @@ function App() {
                   <Route path="contact" element={<Contact />} />
                   <Route path="login" element={<Home />} />
                   <Route path="basket" element={<Basket />} />
-                  <Route path="view:id" element={<View />} />
+                  <Route path="view:id" element={<View  />} />
                 </Route>
               ):(
                 <Route path="/" element={<Navbar/>} >
